@@ -1,21 +1,34 @@
 #include <iostream>
 #include <vector>
+#include <queue>
+#include <algorithm>
 using namespace std;
 
-// 2024-04-10
+int count_ = 0;
+void backTrack(vector<int>& nums, int target, int start){
+    if(nums.size() == start){
+        if(target == 0) 
+        count_++;
 
-int numTrees(int n) {
-    vector<int> dp(n + 1, 0);
-    dp[0] = 1;
-    for(int i = 1; i <= n; i++){
-        for(int j = 1; j <= i; j++){
-            dp[i] += (dp[j - 1] * dp[i - j]);
-        }
+        return;
     }
 
-    return dp[n];
-}  
+    
+    backTrack(nums, target - nums[start], start + 1);
+    backTrack(nums, target + nums[start], start + 1);
+    
+
+}
+
+
+int findTargetSumWays(vector<int>& nums, int target) {
+    backTrack(nums, target, 0);
+    return count_;
+}
 
 int main(){
-    cout << numTrees(10);
+    vector<int>nums = {1,1,1,1,1};
+    int target = 3;
+
+    cout << findTargetSumWays(nums, target);
 }
