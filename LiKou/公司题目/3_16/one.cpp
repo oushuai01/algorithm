@@ -12,11 +12,12 @@ string fun_cc(int num, int format){
             if(char('0' + yu) > '9'){
                 res.push_back(char('A' + yu % 10));
             }
-            res.push_back(char('0' + yu));
+            else res.push_back(char('0' + yu));
         }
         else{
             res.push_back('0');
         }
+
         num = num / format;
     }
 
