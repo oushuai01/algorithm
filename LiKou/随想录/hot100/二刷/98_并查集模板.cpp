@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
+// 2024-04-22
 int n = 1005; // n根据题目中节点数量而定，一般比节点数量大一点就好
 vector<int> father = vector<int> (n, 0); // C++里的一种数组结构
 
