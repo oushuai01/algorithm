@@ -1,108 +1,78 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
 
-int N = 1005;
-vector<int> father = vector<int>(N, 0);
-int n = 0;
+void quick_sort(int q[], int l, int r)
+{
+    if (l >= r) return;
 
-void init(){
-    for(int i = 0; i <= n; i++){
-        father[i] = i;
-    }
-}
-
-int find(int u){
-    return u == father[u] ? u : father[u] = find(father[u]);
-}
-
-bool isSame(int u, int v){
-    u = find(u);
-    v = find(v);
-
-    return u == v;
-}
-
-// u -> v
-void join(int u, int v){
-    u = find(u);
-    v = find(v);
-
-    if(u == v) return;
-
-    father[u] = v;
-}
-
-
-bool isTreeAfterRemove(vector<vector<int>>& edges, int index){
-    for(int i = 0; i < n; i++){
-        if(i == index) continue;
-
-        if(isSame(edges[i][0], edges[i][1])) return false;
-
-        join(edges[i][0], edges[i][1]);
-    }
-    return true;
-}
-
-vector<int> Remove(vector<vector<int>>& edges){
-    for(int i = 0; i < n; i++){
-        if(isSame(edges[i][0], edges[i][1])) return edges[i];
-
-        join(edges[i][0], edges[i][1]);
+    int i = l - 1, j = r + 1, x = q[l + r >> 1];
+    while (i < j)
+    {
+        do i++; while (q[i] < x);
+        do j--; while (q[j] > x);
+        // if (i < j) swap(q[i], q[j]);
     }
 
-    return {};
+    quick_sort(q, l, j);
+    quick_sort(q, j + 1, r);
 }
 
 
+void quick_sort_(int q[], int l, int r){
 
+    if(l >= r) return;
 
+    int i = l - 1, j = r + 1, x = q[l + r >> 1];
 
-
-vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
-    n = edges.size();
-    vector<int> indgreen = vector<int>(N, 0);
-    vector<int> vec;
-    init();
-
-    for(int i = 0; i < n; i++){
-        indgreen[edges[i][1]]++;  // 统计入度
-    }
-    cout << "indgreen: ";
-    // 记录入度为2的边
-    for(int i = n - 1; i >= 0; i--){
-        if(indgreen[edges[i][1]] == 2){
-            vec.push_back(i);
-            cout << i << " ";
-        }
-    }
-    cout << endl;
-
-    // 如果有入度为2的节点
-    // 那么一定是两条边里删一个，看删哪个可以构成树
-    if(vec.size() > 0){
-        if(isTreeAfterRemove(edges, vec[0])) {
-            cout << "isTreeAfterRemove -- true" << endl;
-            return edges[vec[0]];
-        }
-        else {
-            cout << "isTreeAfterRemove -- false" << endl;
-            return edges[vec[1]];
+    while(i < j){
+        do i++; while(q[i] < x);
+        do j--; while(q[j] > x);
+        if(i < j) {
+            int temp = q[i];
+            q[i] = q[j];
+            q[j] = temp;
+            // swap(q[i], q[j]);
         }
     }
 
-    // 明确没有入度为2的情况
-    // 那么一定有有向环，找到构成环的边返回就可以了
-    return Remove(edges);
+    quick_sort_(q, l, j);
+    quick_sort_(q, j + 1, r);
+
 }
 
 
 
-int main(){
-    vector<vector<int>> edges = {{1,2},{1,3},{2,3}};
-    for(auto num : findRedundantDirectedConnection(edges)){
-        cout << num << " ";
+void shift_func(int *array, int len, int k)
+{
+ int i = 0, j = 0;
+ int temp = 0;
+ if (array == NULL)
+  return;
+ k %= len;
+ for (i = 0; i < k; i++)
+ {
+  temp = array[len - 1];
+  for (j = len - 1; j > 0; j--) // 1
+  {
+   array[j] = array[j - 1];
+  }
+  array[0] = temp;
+ }
+}
+
+
+int main()
+{
+    int arr[10] = {1, 5, 8, 9, 45, 15, 36, 56, 20, 3};
+
+    int lenght = sizeof(arr) / sizeof(int);
+
+    quick_sort_(arr, 0, lenght - 1);
+
+    for(int i = 0; i < lenght; i++){
+        printf("%d ", arr[i]);
     }
-    //cout << findRedundantDirectedConnection(edges);
+
 }
