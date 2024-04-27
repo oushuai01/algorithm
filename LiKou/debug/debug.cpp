@@ -1,78 +1,26 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include <iostream>
 
-void quick_sort(int q[], int l, int r)
-{
-    if (l >= r) return;
+int main() {
+    int x = 10;
+    int y = 20;
 
-    int i = l - 1, j = r + 1, x = q[l + r >> 1];
-    while (i < j)
-    {
-        do i++; while (q[i] < x);
-        do j--; while (q[j] > x);
-        // if (i < j) swap(q[i], q[j]);
-    }
+    // 值捕获 x，引用捕获 y
+    auto func1 = [x, &y]() {
+        std::cout << "x (by value): " << x << std::endl;
+        std::cout << "y (by reference): " << y << std::endl;
+    };
 
-    quick_sort(q, l, j);
-    quick_sort(q, j + 1, r);
-}
+    // 通用捕获 x 和 y
+    auto func2 = [&x, y = std::move(y)]() mutable {
+        std::cout << "x (by reference): " << x << std::endl;
+        std::cout << "y (by move): " << y << std::endl;
+    };
 
+    x = 100; // 修改外部变量 x 的值
+    y = 200; // 修改外部变量 y 的值
 
-void quick_sort_(int q[], int l, int r){
+    func1(); // 输出 x=10, y=200
+    func2(); // 输出 x=100, y=20
 
-    if(l >= r) return;
-
-    int i = l - 1, j = r + 1, x = q[l + r >> 1];
-
-    while(i < j){
-        do i++; while(q[i] < x);
-        do j--; while(q[j] > x);
-        if(i < j) {
-            int temp = q[i];
-            q[i] = q[j];
-            q[j] = temp;
-            // swap(q[i], q[j]);
-        }
-    }
-
-    quick_sort_(q, l, j);
-    quick_sort_(q, j + 1, r);
-
-}
-
-
-
-void shift_func(int *array, int len, int k)
-{
- int i = 0, j = 0;
- int temp = 0;
- if (array == NULL)
-  return;
- k %= len;
- for (i = 0; i < k; i++)
- {
-  temp = array[len - 1];
-  for (j = len - 1; j > 0; j--) // 1
-  {
-   array[j] = array[j - 1];
-  }
-  array[0] = temp;
- }
-}
-
-
-int main()
-{
-    int arr[10] = {1, 5, 8, 9, 45, 15, 36, 56, 20, 3};
-
-    int lenght = sizeof(arr) / sizeof(int);
-
-    quick_sort_(arr, 0, lenght - 1);
-
-    for(int i = 0; i < lenght; i++){
-        printf("%d ", arr[i]);
-    }
-
+    return 0;
 }
