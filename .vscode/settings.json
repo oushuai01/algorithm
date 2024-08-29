@@ -49,7 +49,10 @@
     "cstring": "cpp",
     "unordered_set": "cpp",
     "stack": "cpp",
-    "queue": "cpp"
+    "queue": "cpp",
+    "chrono": "cpp",
+    "ratio": "cpp",
+    "thread": "cpp"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

@@ -121,3 +121,36 @@ ListNode* addTwoNumbers_(ListNode* l1, ListNode* l2){
 
     return res->next;
 }
+
+
+
+ListNode* addTwoNumbers_(ListNode* l1, ListNode* l2) {
+        ListNode* res = new ListNode(0);
+        ListNode* cur = res;
+        int pre = 0;
+        while(l1 != nullptr || l2 != nullptr){
+            int x = l1 == nullptr ? 0 : l1->val;
+            int y = l2 == nullptr ? 0 : l2->val;
+
+            int sum = x + y + pre;
+            int val = sum % 10;
+
+            cur->next = new ListNode(val);
+
+            pre = sum / 10;
+
+            if(l1->next != nullptr)
+            l1 = l1->next;
+
+            if(l2->next != nullptr)
+            l2 = l2->next;
+
+            cur = cur->next;
+
+        }
+
+        if(pre == 1)
+        cur->next = new ListNode(pre);
+
+        return res->next;
+}
